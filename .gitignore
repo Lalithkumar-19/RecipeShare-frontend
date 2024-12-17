@@ -10,7 +10,6 @@ lerna-debug.log*
 /node_modules/*
 !.gitignore
 /src/Components/Threeprac.jsx
-/public/models/*
 dist
 dist-ssr
 *.local
