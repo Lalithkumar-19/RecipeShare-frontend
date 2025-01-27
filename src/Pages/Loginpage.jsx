@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { dataContext } from "../Context/AppContext";
 
 function LoginPage() {
 
+  const { data, setData } = useContext(dataContext);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,7 +18,7 @@ function LoginPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSignuping, setIsSignuping] = useState(false);
   const navigate = useNavigate();
-  const GoogleClientId=import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  const GoogleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
   // Email validation
   const validateEmail = (email) => {
@@ -50,8 +53,6 @@ function LoginPage() {
     }
   };
 
-
-
   const handleSignUp = async (e) => {
     e.preventDefault();
     if (
@@ -70,8 +71,7 @@ function LoginPage() {
           name,
         });
         if (res.status == 201) {
-          const { name } = res.data;
-          alert(name, " successfully loginned in...");
+          toast("You successfully signed in...");
           setIsSignuping(false);
           setName("");
           setEmail("");
@@ -91,8 +91,7 @@ function LoginPage() {
     }
   };
 
-
-
+  //normal login function
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!emailError && !passwordError && email && password) {
@@ -104,6 +103,10 @@ function LoginPage() {
         });
         if (res.status == 200 || res.status == 201) {
           const { token, user } = res.data;
+          setData((prev) => ({ ...prev, favRecipes: user.fav_recipes ,list_recipes:user.list_recipes}));
+          localStorage.setItem("userId", user.id);
+          localStorage.setItem("fav_recipes_cnt", user.fav_recipes_cnt);
+          localStorage.setItem("recipes_created", user.recipes_created);
           localStorage.setItem("token", token);
           localStorage.setItem("username", user.name);
           localStorage.setItem("email", user.email);
@@ -118,6 +121,8 @@ function LoginPage() {
     }
   };
 
+
+
   //google login handlers
 
   const handleGoogleLoginSuccess = async (response) => {
@@ -128,6 +133,11 @@ function LoginPage() {
       });
       if (res.status == 200 || res.status == 201) {
         const { token, user } = res.data;
+        console.log(user,"user data");
+        setData((prev) => ({ ...prev, favRecipes: user.fav_recipes ,list_recipes:user.list_recipes}));
+        localStorage.setItem("userId", user.id);
+        localStorage.setItem("fav_recipes_cnt", user.fav_recipes_cnt);
+        localStorage.setItem("recipes_created", user.recipes_created);
         localStorage.setItem("token", token);
         localStorage.setItem("username", user.name);
         localStorage.setItem("email", user.email);
@@ -140,14 +150,10 @@ function LoginPage() {
     }
   };
 
-
-
   const handleGoogleLoginFailure = (error) => {
     alert("error occured while logging through google");
     console.log("Google Login Error", error);
   };
-
-
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
