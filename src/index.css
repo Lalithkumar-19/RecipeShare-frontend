@@ -1,7 +1,13 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Lobster&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@layer base{
+
+}
 
 @layer utilities {
     .scrollbar-hide {
@@ -12,4 +18,16 @@
     .scrollbar-hide::-webkit-scrollbar {
       display: none; /* WebKit browsers */
     }
+  
+    .bree-serif-regular {
+      font-family: "Bree Serif", serif;
+      font-weight: 200;
+      font-style: normal;
+    }
+    
   }
+
+
+
+
+

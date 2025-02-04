@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 
 function Navigation() {
   return (
-    <nav className="bg-white shadow-lg">
+    <nav className="bg-transparent text-white shadow">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between">
           <div className="flex space-x-7">
             <div>
               <Link to="/" className="flex items-center py-4 px-2">
-                <span className="font-semibold text-gray-500 text-lg">
+                <span className="font-semibold text-white text-lg">
                   RecipeShare
                 </span>
               </Link>
@@ -18,20 +18,20 @@ function Navigation() {
             <div className="hidden md:flex items-center space-x-1">
               <Link
                 to="/"
-                className="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300"
+                className="py-4 px-2 text-white font-semibold hover:text-green-500 transition duration-300"
               >
                 Home
               </Link>
               <Link
                 to="/recipes"
-                className="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300"
-              >
+                className="py-4 px-2 text-white font-semibold hover:text-green-500 transition duration-300"
+            >
                 Recipes
               </Link>
               {localStorage.getItem("token") && (
                 <Link
                   to="/create"
-                  className="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300"
+                  className="py-4 px-2 text-white font-semibold hover:text-green-500 transition duration-300"
                 >
                   Create Recipe
                 </Link>
@@ -49,13 +49,14 @@ function Navigation() {
             ) : (
               <Link
                 to="/login"
-                className="py-2 px-2 font-medium text-gray-500 rounded hover:bg-green-500 hover:text-white transition duration-300"
+                className="py-2 px-2 font-medium bg-white text-black rounded-md w-[100px] text-center hover:bg-green-500 hover:text-white transition duration-300"
               >
                 Login
               </Link>
             )}
           </div>
         </div>
+        
       </div>
     </nav>
   );
