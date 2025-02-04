@@ -1,6 +1,8 @@
 import React from "react"
 import Hero from "../Components/Hero"
-import Explore from "../Components/Explore";
+import Explore from "../Components/Explore"
+import Discover from "../Components/Discover"
+import FavRecipes from "../Components/FavRecipes";
 
 function Home() {
 
@@ -8,6 +10,8 @@ function Home() {
     <div>
       <Hero />
       <Explore />
+      <Discover/>
+      <FavRecipes/>
     </div>
 
 
