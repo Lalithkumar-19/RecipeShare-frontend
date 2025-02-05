@@ -16,7 +16,10 @@ function RecipeList() {
   }, [data]);
 
   // Filter recipes based on search input
-  const filteredRecipes = [];
+  const filteredRecipes = recipes.filter(
+    (recipe) => recipe?.name?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  
 
   return (
     <div className="bg-gray-100 min-h-screen p-6 w-full mt-4">
