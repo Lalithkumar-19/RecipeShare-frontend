@@ -1,25 +1,47 @@
-import react from "react"
+import React from "react";
 
 function Hero() {
-    return (
-        <div className="w-full md:h-[600px] h-[550px] -mt-16 -z-10 relative mb-3">
+  return (
+    <div className="relative w-full h-[550px] md:h-[600px] mb-3">
+      {/* Background Video */}
+      <video
+        muted
+        loop
+        autoPlay
 
-            <div className="absolute md:w-[500px] w-full  z-50 md:left-10 md:top-24 left-2 top-48 text-white">
-                <h1 className="md:text-5xl p-5 md:font-medium text-4xl ">Discover Your Next Favourite Recipe Today!</h1>
-                <p className="p-5 text-justify">Explore a curated collection of trending and popular recipes.Find inspiration for every meal and occasion,all in one place.</p>
-                <div className="p-5 flex w-full place-content-center md:place-content-start">
-                    <button type="button" className="py-2 px-2 mr-4 font-medium bg-black text-white rounded-md w-[100px] text-center hover:bg-green-500 hover:text-white transition duration-300"
-                    >Explore</button>
-                    <button type="button" className="py-2 px-2 font-medium bg-black text-white rounded-md w-[100px] text-center hover:bg-green-500 hover:text-white transition duration-300"
-                    >Sign Up</button>
-                </div>
-            </div>
+        title="Welcome"
+        className="absolute top-0 left-0 w-full h-full object-cover opacity-100 -z-10"
+      >
+        <source
+          src="https://videos.pexels.com/video-files/3209700/3209700-uhd_2560_1440_25fps.mp4"
+          type="video/mp4"
+        />
+      </video>
 
-            {/* <img src="https://images.pexels.com/photos/2802527/pexels-photo-2802527.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Hero" className="w-full h-[400px]"/> */}
-            <video muted loop autoPlay title="Welcome" className="w-full h-full  object-cover md:opacity-100 opacity-80 ">
-                <source src="https://videos.pexels.com/video-files/3209700/3209700-uhd_2560_1440_25fps.mp4" type="video/mp4" />
-            </video>
+      {/* Gradient Overlay (Left Side) */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent z-10"></div>
+
+      {/* Hero Text */}
+      <div className="absolute top-1/2 -translate-y-1/2 left-6 md:left-16 max-w-xl text-white z-20">
+        <h1 className="text-3xl md:text-5xl font-bold leading-tight">
+          Discover Your Next Favorite Recipe Today!
+        </h1>
+        <p className="mt-4 text-base md:text-lg leading-relaxed">
+          Explore a curated collection of trending and popular recipes. Find inspiration for every meal and occasion, all in one place.
+        </p>
+
+        {/* Buttons */}
+        <div className="mt-6 flex flex-wrap space-x-4">
+          <button className="py-2 px-6 bg-green-600 hover:bg-green-500 text-white font-medium rounded-md transition duration-300 shadow-lg">
+            Explore
+          </button>
+          <button className="py-2 px-6 border border-green-500 hover:bg-green-600 hover:text-white text-green-500 font-medium rounded-md transition duration-300 shadow-lg">
+            Sign Up
+          </button>
         </div>
-    )
+      </div>
+    </div>
+  );
 }
+
 export default Hero;

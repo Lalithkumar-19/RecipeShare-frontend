@@ -1,5 +1,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Lobster&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -23,6 +24,16 @@
       font-family: "Bree Serif", serif;
       font-weight: 200;
       font-style: normal;
+    }
+    .roboto{
+      font-family: "Roboto", serif;
+      font-weight: 300;
+      font-style: normal;
+    }
+    .roboto-with-weight{
+      font-family:"Roboto";
+      font-weight:bold;
+      font-style:normal;
     }
     
   }

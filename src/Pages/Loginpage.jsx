@@ -101,7 +101,7 @@ function LoginPage() {
           email,
           password,
         });
-        if (res.status == 200 || res.status == 201) {
+        if ( res.status == 201) {
           const { token, user } = res.data;
           setData((prev) => ({ ...prev, favRecipes: user.fav_recipes ,list_recipes:user.list_recipes}));
           localStorage.setItem("userId", user.id);
