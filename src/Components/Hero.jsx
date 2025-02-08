@@ -1,4 +1,5 @@
 import React from "react";
+import { ReactTyped } from "react-typed";
 
 function Hero() {
   return (
@@ -8,7 +9,6 @@ function Hero() {
         muted
         loop
         autoPlay
-
         title="Welcome"
         className="absolute top-0 left-0 w-full h-full object-cover opacity-100 -z-10"
       >
@@ -23,11 +23,18 @@ function Hero() {
 
       {/* Hero Text */}
       <div className="absolute top-1/2 -translate-y-1/2 left-6 md:left-16 max-w-xl text-white z-20">
-        <h1 className="text-3xl md:text-5xl font-bold leading-tight">
-          Discover Your Next Favorite Recipe Today!
+        <h1 className="text-3xl md:text-5xl h-30 font-bold leading-tight">
+          Discover Your Next <br />
+          <ReactTyped
+            strings={[" Favorite Recipe Today!", " Amazing Recipes Today"]}
+            typeSpeed={80}
+            backSpeed={20}
+            loop
+          ></ReactTyped>
         </h1>
         <p className="mt-4 text-base md:text-lg leading-relaxed">
-          Explore a curated collection of trending and popular recipes. Find inspiration for every meal and occasion, all in one place.
+          Explore a curated collection of trending and popular recipes. Find
+          inspiration for every meal and occasion, all in one place.
         </p>
 
         {/* Buttons */}

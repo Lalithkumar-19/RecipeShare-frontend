@@ -20,7 +20,7 @@ function Explore() {
                 {data.map((item, key) => {
                    return <ExploreCards img={item.img} info={item.info} title={item.title} key={key}/>
                 })}
-               {/* flex md:flex-row flex-col flex-wrap place-items-center md:place-items-start */}
+             
                
             </div>
 

@@ -2,12 +2,11 @@ import React, { useContext, useState } from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { dataContext } from "../Context/AppContext";
+import { toast, ToastContainer } from "react-toastify";
+import { DataContext } from "../Context/AppContext";
 
 function LoginPage() {
-
-  const { data, setData } = useContext(dataContext);
+  const { data, setData } = useContext(DataContext);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -71,7 +70,7 @@ function LoginPage() {
           name,
         });
         if (res.status == 201) {
-          toast("You successfully signed in...");
+          toast.success("You successfully signed in...");
           setIsSignuping(false);
           setName("");
           setEmail("");
@@ -85,9 +84,12 @@ function LoginPage() {
           setPassword("");
         }
       } catch (error) {
+        toast.error("User Email may be used");
         console.log(error);
       }
       setIsSignuping(false);
+    } else {
+      toast.info("crednetial needed to sign in are not provided");
     }
   };
 
@@ -101,9 +103,13 @@ function LoginPage() {
           email,
           password,
         });
-        if ( res.status == 201) {
+        if (res.status == 200) {
           const { token, user } = res.data;
-          setData((prev) => ({ ...prev, favRecipes: user.fav_recipes ,list_recipes:user.list_recipes}));
+          setData((prev) => ({
+            ...prev,
+            favRecipes: user.fav_recipes,
+            list_recipes: user.list_recipes,
+          }));
           localStorage.setItem("userId", user.id);
           localStorage.setItem("fav_recipes_cnt", user.fav_recipes_cnt);
           localStorage.setItem("recipes_created", user.recipes_created);
@@ -115,13 +121,11 @@ function LoginPage() {
           location.reload();
         }
       } catch (error) {
-        alert("error occured while logging in..");
+        toast.error("User may not registered...");
       }
       setIsSubmitting(false);
     }
   };
-
-
 
   //google login handlers
 
@@ -133,8 +137,12 @@ function LoginPage() {
       });
       if (res.status == 200 || res.status == 201) {
         const { token, user } = res.data;
-        console.log(user,"user data");
-        setData((prev) => ({ ...prev, favRecipes: user.fav_recipes ,list_recipes:user.list_recipes}));
+        console.log(user, "user data");
+        setData((prev) => ({
+          ...prev,
+          favRecipes: user.fav_recipes,
+          list_recipes: user.list_recipes,
+        }));
         localStorage.setItem("userId", user.id);
         localStorage.setItem("fav_recipes_cnt", user.fav_recipes_cnt);
         localStorage.setItem("recipes_created", user.recipes_created);
@@ -157,6 +165,7 @@ function LoginPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <ToastContainer/>
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
           {toggle ? "Sign Up" : "Login"}

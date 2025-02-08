@@ -2,86 +2,87 @@ import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { dataContext } from "../Context/AppContext";
-
+import { DataContext } from "../Context/AppContext";
 
 const RecipeCard = ({ recipe }) => {
-  const { data, setData } = useContext(dataContext);
-  const [isFavourite, setIsFavourite] = useState(true);
+  const { data, setData } = useContext(DataContext);
+  const [isFavourite, setIsFavourite] = useState(false); // Default false
 
+  // Check if recipe is in user's favorite list when component mounts
   useEffect(() => {
-    const isFav = data.favRecipes.find((item) => item === recipe.id);
-    if (isFav) setIsFavourite(true);
-  }, [data, recipe.id]);
-
+    const isFav = data.favRecipes.some((item) => item== recipe.id);
+    setIsFavourite(isFav);
+  }, [data.favRecipes, recipe.id]); // Ensure effect runs when favRecipes updates
 
   const handleUnsave = async () => {
     if (!isFavourite) return;
-    if (!localStorage.getItem("userId")) {
-      toast.info("Login to save ans Unsave Recipes");
+    if (!localStorage.getItem("token")) {
+      toast.info("Login to save and unsave Recipes");
       return;
     }
+
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/removeFromSaved?id=${
-          recipe.id
-        }&userId=${localStorage.getItem("userId")}`
+        `http://localhost:5000/api/removeFromSaved?id=${recipe.id}&userId=${localStorage.getItem("userId")}`
       );
-      if (res.status == 200) {
+
+      if (res.status === 200) {
         const { cnt, data } = res.data;
-        setData((prev) => ({ ...prev, favRecipes: [...data] }));
+        setData((prev) => ({ ...prev, favRecipes: data }));
         localStorage.setItem("fav_recipes_cnt", cnt);
-        toast.success("Saved Sucessfully");
+        toast.success("Recipe removed from favorites!");
         setIsFavourite(false);
       } else {
-        toast.error("Failed to UnSave");
+        toast.error("Failed to remove from favorites.");
       }
     } catch (error) {
-      console.log(error);
-      toast.error("Failed to UnSave");
+      console.error(error);
+      toast.error("Failed to remove from favorites.");
     }
   };
 
-
   const handleSave = async () => {
     if (isFavourite) {
-      handleUnsave();
+      handleUnsave(); // If already favorite, unsave instead
       return;
     }
-    console.log("saving called");
-    if (!localStorage.getItem("userId")) {
+
+    if (!localStorage.getItem("token")) {
       toast.info("Login to save Recipes");
       return;
     }
+
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/saveRecipe?id=${
-          recipe.id
-        }&userId=${localStorage.getItem("userId")}`
+        `http://localhost:5000/api/saveRecipe?id=${recipe.id}&userId=${localStorage.getItem("userId")}`
       );
-      if (res.status == 200) {
-        const { cnt ,data} = res.data;
+
+      if (res.status === 200) {
+        const { cnt, data } = res.data;
+        setData((prev) => ({ ...prev, favRecipes: data }));
         localStorage.setItem("fav_recipes_cnt", cnt);
-        setData((prev) => ({ ...prev, favRecipes: [...data] }));
-        toast.success("Saved Sucessfully");
+        toast.success("Recipe added to favorites!");
         setIsFavourite(true);
       } else {
-        toast.error("Failed to Save");
+        toast.error("Failed to save recipe.");
       }
     } catch (error) {
-      console.log(error);
-      toast.error("Failed to Save");
+      console.error(error);
+      toast.error("Failed to save recipe.");
     }
   };
 
   return (
     <div className="md:hover:scale-105 p-4 relative">
+      {/* Favorite Icon */}
       <div
-        className={`fa fa-bookmark absolute top-2 z-50 right-5 text-[27px] cursor-pointer ${
-          isFavourite ? "text-red-800" : "text-black"
+        className={`fa fa-bookmark absolute top-2 right-5 text-[27px] z-50 cursor-pointer ${
+          isFavourite ? "text-red-800" : "text-gray-500"
         }`}
         onClick={handleSave}
       ></div>
+
+      {/* Recipe Card */}
       <Link
         key={recipe.id}
         to={`/recipe/${recipe.id}`}
@@ -104,7 +105,7 @@ const RecipeCard = ({ recipe }) => {
               </span>
             </div>
             <span className="text-sm text-gray-500">
-              Preparation Time: {recipe.prep_time}
+              Preparation Time: {recipe.prep_time}min
             </span>
           </div>
         </div>

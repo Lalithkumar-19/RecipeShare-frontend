@@ -114,6 +114,7 @@ function UserProfile() {
     localStorage.removeItem("email");
     localStorage.removeItem("dp");
     localStorage.removeItem("token");
+    localStorage.removeItem("userId");
     navigate("/");
     location.reload();
   };

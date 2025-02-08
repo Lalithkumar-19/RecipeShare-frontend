@@ -2,24 +2,69 @@ import React, { useContext, useEffect, useState } from "react";
 import RecipeCard from "../Components/RecipeCard";
 import { Loader } from "../Components/Loader";
 import { ToastContainer } from "react-toastify";
-import { dataContext } from "../Context/AppContext";
+import { DataContext } from "../Context/AppContext";
+import axios from "axios";
 
 function RecipeList() {
   const [recipes, setRecipes] = useState([]);
-  const [searchQuery, setSearchQuery] = useState(""); // State for search input
-  const { data } = useContext(dataContext);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchPage, setSearchPage] = useState(1);
+  const [totalSearchRecipes, setTotalSearchRecipes] = useState(0);
+  const { data, setPage } = useContext(DataContext);
+  const { totalrecipesCnt, All_recipes } = data;
 
   useEffect(() => {
-    if (data?.All_recipes) {
-      setRecipes(data.All_recipes);
+    if (searchQuery.trim() === "") {
+      setRecipes(All_recipes);
     }
-  }, [data]);
+  }, [All_recipes, searchQuery]);
 
-  // Filter recipes based on search input
-  const filteredRecipes = recipes.filter(
-    (recipe) => recipe?.name?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-  
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      if (searchQuery.trim() !== "") {
+        fetchFilteredRecipes(1, true);
+      } else {
+        setRecipes(All_recipes);
+        setSearchPage(1);
+      }
+    }, 1000);
+    return () => clearTimeout(delayDebounce);
+  }, [searchQuery]);
+
+  const fetchFilteredRecipes = async (page = 1) => {
+    try {
+      if (searchQuery.trim() !== "") {
+        const res = await axios.get(
+          `http://localhost:5000/api/getFiltered?query=${searchQuery.trim()}&page=${page}&limit=10`
+        );
+        if (res.status === 200) {
+          const { recipes, totalRecipes } = res.data;
+          if (page === 1) {
+            setRecipes(recipes);
+          } else {
+            setRecipes((prev) => [...prev, ...recipes]);
+          }
+          setTotalSearchRecipes(totalRecipes);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching filtered recipes:", error);
+    }
+  };
+
+  const handleLoadMore = () => {
+    if (searchQuery.trim() !== "") {
+      if (recipes.length < totalSearchRecipes) {
+        const nextPage = searchPage + 1;
+        setSearchPage(nextPage);
+        fetchFilteredRecipes(nextPage);
+      }
+    } else {
+      if (All_recipes.length < totalrecipesCnt) {
+        setPage((prevPage) => prevPage + 1);
+      }
+    }
+  };
 
   return (
     <div className="bg-gray-100 min-h-screen p-6 w-full mt-4">
@@ -42,19 +87,35 @@ function RecipeList() {
       </div>
 
       {/* Recipes Grid */}
-      {filteredRecipes.length > 0 ? (
+      {recipes.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredRecipes.map((recipe) => (
-            <RecipeCard key={recipe.id} recipe={recipe} />
+          {recipes.map((recipe, index) => (
+            <RecipeCard key={`${recipe.id}-${index}`} recipe={recipe} />
           ))}
         </div>
       ) : searchQuery ? (
         <p className="text-center text-gray-600 mt-10 text-lg">
-          No recipes found for "<span className="font-semibold">{searchQuery}</span>"
+          No recipes found for "
+          <span className="font-semibold">{searchQuery}</span>"
         </p>
       ) : (
         <div className="flex justify-center">
           <Loader />
+        </div>
+      )}
+
+      {/* Load More Button */}
+      {(searchQuery.trim() !== ""
+        ? recipes.length < totalSearchRecipes
+        : All_recipes.length < totalrecipesCnt) && (
+        <div className="w-full flex place-content-center mt-6">
+          <button
+            onClick={handleLoadMore}
+            className="bg-green-800 p-3 text-white rounded-lg hover:bg-green-700 transition duration-200"
+            type="button"
+          >
+            Load More...
+          </button>
         </div>
       )}
     </div>
