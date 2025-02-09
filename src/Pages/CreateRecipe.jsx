@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect, useRef } from "react";
+import { gsap } from "gsap";
 import { FileUploader } from "react-drag-drop-files";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { Loader } from "../Components/Loader";
-
 
 function CreateRecipe() {
   const fileTypes = ["JPG", "PNG", "GIF"];
@@ -14,6 +13,15 @@ function CreateRecipe() {
   const [prepTime, setPrepTime] = useState("");
   const [file, setFile] = useState(null);
   const [creatingState, setCreatingState] = useState(false);
+  const formRef = useRef(null);
+
+  useEffect(() => {
+    gsap.fromTo(
+      formRef.current,
+      { opacity: 0, y: 50 },
+      { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
+    );
+  }, []);
 
   const handleChange = (file) => {
     setFile(file);
@@ -57,116 +65,71 @@ function CreateRecipe() {
         }
       );
       if (res.status == 201) {
-        const {cnt}=res.data;
-        localStorage.setItem("recipes_created", cnt); 
-        toast.success("Yahoo..sucessfully Recipe Created");
+        const { cnt } = res.data;
+        localStorage.setItem("recipes_created", cnt);
+        toast.success("Successfully created the recipe!");
       } else {
-        toast.info("Cant reach our servers");
+        toast.info("Unable to reach servers.");
       }
     } catch (error) {
       console.log(error);
-      toast.error("Error has been occured!");
+      toast.error("An error occurred!");
     }
     setCreatingState(false);
-    // setTitle("");
-    // setIngredients("");
-    // setInstructions("");
-    // setImage("");
-    // setPrepTime(0);
   };
 
   return (
-    <motion.div
-      className="max-w-3xl mx-auto p-6"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
+    <div ref={formRef} className="max-w-3xl mx-auto p-6 bg-gray-100 rounded-lg shadow-xl">
       <ToastContainer />
-      <h1 className="text-4xl font-bold mb-6 text-center text-gray-800">
-        Create New Recipe
+      <h1 className="text-4xl font-extrabold text-center text-indigo-600 mb-6 animate-pulse">
+        Create a New Recipe
       </h1>
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white shadow-lg rounded-lg px-8 pt-6 pb-8"
-      >
+      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md">
         <div className="mb-6">
-          <label
-            className="block text-gray-700 text-sm font-semibold mb-2"
-            htmlFor="title"
-          >
-            Recipe Title
-          </label>
-          <motion.input
-            className="w-full border border-gray-300 rounded-lg py-2 px-3 focus:ring-2 focus:ring-green-400 focus:outline-none"
-            id="title"
+          <label className="block text-lg font-semibold mb-2">Recipe Title</label>
+          <input
+            className="w-full border-none outline-none rounded-lg py-3 px-4 focus:ring focus:ring-indigo-400"
             type="text"
             placeholder="Enter recipe title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            whileFocus={{ scale: 1.02 }}
             required
           />
         </div>
+
         <div className="mb-6">
-          <label
-            className="block text-gray-700 text-sm font-semibold mb-2"
-            htmlFor="ingredients"
-          >
-            Ingredients
-          </label>
+          <label className="block text-lg font-semibold mb-2">Ingredients</label>
           <textarea
-            className="w-full border border-gray-300 rounded-lg py-2 px-3 focus:ring-2 focus:ring-green-400 focus:outline-none scrollbar-hide"
-            id="ingredients"
+            className="w-full border-none outline-none  rounded-lg py-3 px-4 focus:ring focus:ring-indigo-400"
             placeholder="Enter ingredients (one per line)"
             value={ingredients}
             onChange={(e) => setIngredients(e.target.value)}
+            rows="4"
+            required
+          ></textarea>
+        </div>
+
+        <div className="mb-6">
+          <label className="block text-lg font-semibold mb-2">Instructions</label>
+          <textarea
+            className="w-full border-none outline-none  rounded-lg py-3 px-4 focus:ring focus:ring-indigo-400"
+            placeholder="Enter cooking instructions"
+            value={instructions}
+            onChange={(e) => setInstructions(e.target.value)}
             rows="5"
             required
           ></textarea>
         </div>
+
         <div className="mb-6">
-          <label
-            className="block text-gray-700 text-sm font-semibold mb-2"
-            htmlFor="instructions"
-          >
-            Instructions
-          </label>
-          <textarea
-            className="w-full border border-gray-300 rounded-lg py-2 px-3 focus:ring-2 focus:ring-green-400 focus:outline-none scrollbar-hide"
-            id="instructions"
-            placeholder="Enter cooking instructions"
-            value={instructions}
-            onChange={(e) => setInstructions(e.target.value)}
-            rows="8"
-            required
-          ></textarea>
+          <label className="block text-lg font-semibold mb-2">Upload Image</label>
+          <FileUploader handleChange={handleChange} name="file" types={fileTypes} />
         </div>
 
         <div className="mb-6">
-          <label
-            className="block text-gray-700 text-sm font-semibold mb-2"
-            htmlFor="image"
-          >
-            Upload Image
-          </label>
-          <FileUploader
-            handleChange={handleChange}
-            name="file"
-            types={fileTypes}
-          />
-        </div>
-
-        <div className="mb-6">
-          <label
-            className="block text-gray-700 text-sm font-semibold mb-2"
-            htmlFor="prepTime"
-          >
-            Preparation Time (in minutes)
-          </label>
+          <label className="block text-lg font-semibold mb-2">Preparation Time (in minutes)</label>
           <input
-            className="w-full border border-gray-300 rounded-lg py-2 px-3 focus:ring-2 focus:ring-green-400 focus:outline-none"
-            id="prepTime"
+            className="w-full border-none outline-none  rounded-lg py-3 px-4 focus:ring focus:ring-indigo-400"
             type="number"
             placeholder="Enter preparation time"
             value={prepTime}
@@ -175,24 +138,16 @@ function CreateRecipe() {
             required
           />
         </div>
-        <motion.button
-          className="w-full bg-gradient-to-r from-green-400 to-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:from-green-500 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+
+        <button
+          className="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out transform hover:scale-105"
           type="submit"
           disabled={creatingState}
-          whileHover={!creatingState ? { scale: 1.05 } : {}}
-          whileTap={!creatingState ? { scale: 0.95 } : {}}
-          onClick={handleSubmit}
         >
-          {creatingState ? (
-            <div className="w-100 flex flex-1 place-content-center">
-              <Loader />
-            </div>
-          ) : (
-            "Create Recipe"
-          )}
-        </motion.button>
+          {creatingState ? <Loader /> : "Create Recipe"}
+        </button>
       </form>
-    </motion.div>
+    </div>
   );
 }
 
