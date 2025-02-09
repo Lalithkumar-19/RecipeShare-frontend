@@ -18,7 +18,7 @@ function ExploreCards({ img, title, info, direction = "bottom" }) {
       { opacity: 0, y: direction === "bottom" ? 100 : -100, scale: 0.9 },
       {
         opacity: 1,
-        y: 0,
+        y:0,
         scale: 1,
         duration: 1,
         ease: "power2.out",
@@ -37,7 +37,6 @@ function ExploreCards({ img, title, info, direction = "bottom" }) {
     gsap.to(textRef.current, { opacity: 1, duration: 0.6, ease: "power2.out" });
     gsap.to(titleRef.current, { y: -5, duration: 0.4, ease: "power1.out" });
   };
-
   const handleMouseLeave = () => {
     gsap.to(bgRef.current, { width: "0%", duration: 0.6, ease: "power2.out" });
     gsap.to(textRef.current, { opacity: 0.5, duration: 0.6, ease: "power2.out" });
@@ -47,7 +46,7 @@ function ExploreCards({ img, title, info, direction = "bottom" }) {
   return (
     <div
       ref={cardRef}
-      className="relative bg-[#121212] shadow-xl w-[400px] p-5 overflow-hidden cursor-pointer hover:scale-105 transition duration-300 rounded-lg border border-gray-800"
+      className="relative bg-[#121212] shadow-xl w-[400px] p-5 overflow-hidden cursor-pointer hover:scale-105 transition duration-300 rounded-lg border border-gray-800 mb-4"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -55,7 +54,7 @@ function ExploreCards({ img, title, info, direction = "bottom" }) {
       <div
         ref={bgRef}
         className="absolute top-0 left-0 h-full bg-green-700 opacity-60"
-        style={{ width: "0%", zIndex: 1, transition: "width 0.5s ease-in-out" }}
+        style={{ width: "0%", zIndex: 1, transition: "width 0.5s ease-in-out"}}
       ></div>
 
       {/* Image */}
