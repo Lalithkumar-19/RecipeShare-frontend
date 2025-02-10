@@ -26,7 +26,7 @@ function Hero() {
         <h1 className="text-3xl md:text-5xl h-30 font-bold leading-tight">
           Discover Your Next <br />
           <ReactTyped
-            strings={[" Favorite Recipe Today!", " Amazing Recipes Today"]}
+            strings={[" Favourite Recipe Today!", " Amazing Recipes Today"]}
             typeSpeed={80}
             backSpeed={20}
             loop

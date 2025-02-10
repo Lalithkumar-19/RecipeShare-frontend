@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState, useRef, useEffect } from "react";
 
 function RecipeAIBot() {
@@ -24,19 +25,17 @@ function RecipeAIBot() {
   }, [isOpen]);
 
   // Generate a recipe (Simulating API call with delay)
-  const generateRecipe = () => {
+  const generateRecipe = async () => {
     if (ingredients.trim() === "") return;
     setIsThinking(true);
 
-    setTimeout(() => {
-      setRecipe(`Here's a recipe idea using: ${ingredients}.
-      - Step 1: Chop and prepare ingredients.
-      - Step 2: Cook as needed.
-      - Step 3: Serve and enjoy! 🍽️`);
-      setIsThinking(false);
+    // Simulating API response delay
+    const res = await axios.get(`http://localhost:5000/api/generateRecipe?ingredients=${ingredients}`);
+    if (res.status === 200) {
+      setIsThinking(false)
+      setRecipe(res.data.data.content);
       setShowRecipeModal(true);
-    }, 2000); // Simulating API response delay
-
+    }
     setIngredients("");
   };
 
@@ -109,7 +108,7 @@ function RecipeAIBot() {
                 ×
               </button>
             </div>
-            <p className="mt-4 text-gray-800">{recipe}</p>
+            <p className="mt-4 overflow-y-scroll h-[300px] text-gray-800">{recipe}</p>
           </div>
         </div>
       )}
