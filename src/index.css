@@ -35,6 +35,11 @@
       font-weight:bold;
       font-style:normal;
     }
+    .scroll_off{
+      body{
+        overflow-y: hidden;
+      }
+    }
     
   }
 

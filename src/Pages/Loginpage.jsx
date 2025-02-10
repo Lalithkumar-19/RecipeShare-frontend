@@ -1,9 +1,10 @@
 import React, { useContext, useState } from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { DataContext } from "../Context/AppContext";
+
 
 function LoginPage() {
   const { data, setData } = useContext(DataContext);
@@ -25,6 +26,8 @@ function LoginPage() {
     return regex.test(email);
   };
 
+
+  
   const handleNameChange = (e) => {
     setName(e.target.value);
     if (e.target.value.length < 3) {
@@ -112,6 +115,7 @@ function LoginPage() {
           }));
           localStorage.setItem("userId", user.id);
           localStorage.setItem("fav_recipes_cnt", user.fav_recipes_cnt);
+          setData((prev)=>({...prev,favcnt:user.fav_recipes_cnt}));
           localStorage.setItem("recipes_created", user.recipes_created);
           localStorage.setItem("token", token);
           localStorage.setItem("username", user.name);
@@ -235,6 +239,13 @@ function LoginPage() {
             {passwordError && (
               <p className="text-red-500 text-sm mt-1">{passwordError}</p>
             )}
+             <Link
+               to={"/forgot-password"}
+              className="text-blue-500 hover:text-blue-600"
+              onClick={() => setToggle(!toggle)}
+            >
+              Forgot Password?
+            </Link>
           </div>
           {!toggle ? (
             <button

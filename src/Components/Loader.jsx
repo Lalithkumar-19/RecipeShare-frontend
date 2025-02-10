@@ -2,6 +2,7 @@ import { Vortex } from "react-loader-spinner";
 
 export const Loader = () => {
   return (
+    <div className="mb-[300px]">
     <Vortex
       visible={true}
       height="40"
@@ -11,5 +12,6 @@ export const Loader = () => {
       wrapperClass="vortex-wrapper"
       colors={["red", "green", "blue", "yellow", "orange", "purple"]}
     />
+    </div>
   );
 };

@@ -5,14 +5,17 @@ import { toast } from "react-toastify";
 import { DataContext } from "../Context/AppContext";
 
 const RecipeCard = ({ recipe }) => {
-  const { data, setData } = useContext(DataContext);
+  const context = useContext(DataContext);
+  const { data, setData, fav_Recipes, setFav_Recipes } = context;
   const [isFavourite, setIsFavourite] = useState(false); // Default false
 
   // Check if recipe is in user's favorite list when component mounts
   useEffect(() => {
-    const isFav = data.favRecipes.some((item) => item== recipe.id);
+    const isFav = data.favRecipes.some(
+      (item) => parseInt(item) == parseInt(recipe.id)
+    );
     setIsFavourite(isFav);
-  }, [data.favRecipes, recipe.id]); // Ensure effect runs when favRecipes updates
+  }, []);
 
   const handleUnsave = async () => {
     if (!isFavourite) return;
@@ -23,12 +26,15 @@ const RecipeCard = ({ recipe }) => {
 
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/removeFromSaved?id=${recipe.id}&userId=${localStorage.getItem("userId")}`
+        `http://localhost:5000/api/removeFromSaved?id=${
+          recipe.id
+        }&userId=${localStorage.getItem("userId")}`
       );
 
       if (res.status === 200) {
         const { cnt, data } = res.data;
-        setData((prev) => ({ ...prev, favRecipes: data }));
+        setFav_Recipes((prev) => prev.filter((item) => item.id != recipe.id));
+        setData((prev) => ({ ...prev, favRecipes: data, favcnt: cnt }));
         localStorage.setItem("fav_recipes_cnt", cnt);
         toast.success("Recipe removed from favorites!");
         setIsFavourite(false);
@@ -54,12 +60,14 @@ const RecipeCard = ({ recipe }) => {
 
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/saveRecipe?id=${recipe.id}&userId=${localStorage.getItem("userId")}`
+        `http://localhost:5000/api/saveRecipe?id=${
+          recipe.id
+        }&userId=${localStorage.getItem("userId")}`
       );
 
       if (res.status === 200) {
         const { cnt, data } = res.data;
-        setData((prev) => ({ ...prev, favRecipes: data }));
+        setData((prev) => ({ ...prev, favRecipes: data, favcnt: cnt }));
         localStorage.setItem("fav_recipes_cnt", cnt);
         toast.success("Recipe added to favorites!");
         setIsFavourite(true);

@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FileUploader } from "react-drag-drop-files";
 import axios from "axios";
 import RecipeCard from "../Components/RecipeCard";
 import ReactPaginate from "react-paginate";
-import { events } from "@react-three/fiber";
+import { DataContext } from "../Context/AppContext";
+import UserRecipeCard from "../Components/UserRecipesCard";
 
 function UserProfile() {
   const navigate = useNavigate();
@@ -15,21 +16,33 @@ function UserProfile() {
   const [currentPage, setCurrentPage] = useState(0);
   const [favRecipePage, setfavRecipePage] = useState(0);
   const [currentFavPage, setCurrentFavPage] = useState(0);
-  const [Created_Recipes, setCreated_Recipes] = useState(null);
-  const [fav_Recipes, setFav_Recipes] = useState(null);
+  // const [Created_Recipes, setCreated_Recipes] = useState(null);
+  // const [fav_Recipes, setFav_Recipes] = useState(null);
+  const context = useContext(DataContext);
+  const {
+    data,
+    setData,
+    fav_Recipes,
+    setFav_Recipes,
+    Created_Recipes,
+    setCreated_Recipes,
+  } = context;
 
   useEffect(() => {
-    let rounded_val = Math.ceil(localStorage.getItem("recipes_created") / 4);
-    let rounded_fav_cnt = Math.ceil(
-      localStorage.getItem("fav_recipes_cnt") / 4
-    );
-    setfavRecipePage(rounded_fav_cnt);
-    setPageCount(rounded_val);
-  }, []);
+    try {
+      let rounded_val = Math.ceil(data.createdRecipes_cnt / 4);
+      let rounded_fav_cnt = Math.ceil(data.favcnt / 4);
+      setfavRecipePage(rounded_fav_cnt);
+      setPageCount(rounded_val);
+    } catch (err) {
+      console.log(err);
+    }
+  }, [data.favcnt]);
 
   const handlePageClick = (event) => {
     setCurrentPage(event.selected);
   };
+
   const handleFavPageClick = (event) => {
     setCurrentFavPage(event.selected);
   };
@@ -44,8 +57,11 @@ function UserProfile() {
       localStorage.getItem("dp").trim() !== ""
         ? localStorage.getItem("dp")
         : "https://cdn.pixabay.com/photo/2021/07/02/04/48/user-6380868_1280.png",
-    recipesCreated: localStorage.getItem("recipes_created"),
-    favoriteRecipes: localStorage.getItem("fav_recipes_cnt"),
+    recipesCreated:
+      Created_Recipes != null
+        ? Array.isArray(Created_Recipes) && Created_Recipes.length
+        : localStorage.getItem("recipes_created"),
+    favoriteRecipes: data.favcnt || 0,
   };
 
   const LoadRecipesCreated = async (page) => {
@@ -61,7 +77,8 @@ function UserProfile() {
         }
       );
       if (res.status == 200) {
-        setCreated_Recipes([...res.data]);
+        setData((prev) => ({ ...prev, createdRecipes_cnt: res.data.cnt }));
+        setCreated_Recipes([...res.data.data]);
       }
     } catch (error) {
       console.log(error);
@@ -71,7 +88,7 @@ function UserProfile() {
   const LoadFavRecipes = async (page) => {
     try {
       if (!localStorage.getItem("userId")) return;
-  
+
       const res = await axios.get(`http://localhost:5000/api/getFavRecipes`, {
         params: {
           page: page + 1,
@@ -86,9 +103,6 @@ function UserProfile() {
       console.log(error);
     }
   };
-
-  console.log(fav_Recipes)
-  //api request to get all recipes done by him
 
   useEffect(() => {
     LoadRecipesCreated(currentPage);
@@ -226,13 +240,15 @@ function UserProfile() {
               fav_Recipes.map((recipe) => {
                 return <RecipeCard key={recipe.id} recipe={recipe} />;
               })}
-            {fav_Recipes == null && (
+            {data.favcnt==0 && (
               <h1 className="p-2">No Recipes Created By You</h1>
             )}
           </div>
+
+
           <div
             className={`mx-auto  w-full ${
-              fav_Recipes != null ? "flex" : "hidden"
+               data.favcnt != 0 ? "flex" : "hidden"
             } place-items-center `}
           >
             <ReactPaginate
@@ -254,18 +270,20 @@ function UserProfile() {
           <h2 className="text-2xl p-2 font-semibold text-gray-800 underline underline-offset-4 mb-4">
             Recipes By You
           </h2>
-          {Created_Recipes == null && "None of you have saved yet...."}
+          {Created_Recipes != null &&
+              Array.isArray(Created_Recipes) &&Created_Recipes.length===0 && "None of you have saved yet...."}
           <div className="grid sm:p-2 md:p-0 sm:grid-cols-2  gap-4 w-full">
             {Created_Recipes != null &&
               Array.isArray(Created_Recipes) &&
               Created_Recipes.length !== 0 &&
               Created_Recipes.map((recipe) => {
-                return <RecipeCard key={recipe.id} recipe={recipe} />;
+                return <UserRecipeCard key={recipe.id} recipe={recipe} />;
               })}
           </div>
           <div
             className={`mx-auto  w-full ${
-              Created_Recipes != null ? "flex" : "hidden"
+              Created_Recipes != null &&
+              Array.isArray(Created_Recipes) && Created_Recipes.length!==0 ? "flex" : "hidden"
             } place-items-center `}
           >
             <ReactPaginate

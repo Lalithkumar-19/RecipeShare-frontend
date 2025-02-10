@@ -8,7 +8,7 @@ import Navigation from './Components/Navigation'
 import RecipeDetail from "./Pages/RecipeDetail"
 import Footer from './Pages/Footer'
 import LoginPage from './Pages/Loginpage'
-
+import ForgotPassword from './Pages/Forgot-password';
 
 function App() {
   return (
@@ -21,6 +21,7 @@ function App() {
         <Route path="/create" element={<CreateRecipe />} />
         <Route path="/profile" element={<UserProfile />} />
         <Route path='/recipe/:id' element={<RecipeDetail/>}/>
+        <Route path="/forgot-password" element={<ForgotPassword/>}/>
       </Routes>
       <Footer/>
     </Router>
