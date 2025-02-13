@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState, useRef, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
 
 function RecipeAIBot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -108,7 +109,9 @@ function RecipeAIBot() {
                 ×
               </button>
             </div>
-            <p className="mt-4 overflow-y-scroll h-[300px] text-gray-800">{recipe}</p>
+            <p className="mt-4 overflow-y-scroll h-[300px] text-gray-800">
+            <ReactMarkdown>{recipe}</ReactMarkdown>
+            </p>
           </div>
         </div>
       )}
