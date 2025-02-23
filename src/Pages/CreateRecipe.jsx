@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { Loader } from "../Components/Loader";
 
 function CreateRecipe() {
+  
   const fileTypes = ["JPG", "PNG", "GIF"];
   const [title, setTitle] = useState("");
   const [ingredients, setIngredients] = useState("");
