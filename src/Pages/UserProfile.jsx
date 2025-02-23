@@ -6,6 +6,7 @@ import RecipeCard from "../Components/RecipeCard";
 import ReactPaginate from "react-paginate";
 import { DataContext } from "../Context/AppContext";
 import UserRecipeCard from "../Components/UserRecipesCard";
+import { toast, ToastContainer } from "react-toastify";
 
 function UserProfile() {
   const navigate = useNavigate();
@@ -16,8 +17,9 @@ function UserProfile() {
   const [currentPage, setCurrentPage] = useState(0);
   const [favRecipePage, setfavRecipePage] = useState(0);
   const [currentFavPage, setCurrentFavPage] = useState(0);
-  // const [Created_Recipes, setCreated_Recipes] = useState(null);
-  // const [fav_Recipes, setFav_Recipes] = useState(null);
+  const [dp, setdp] = useState(null);
+  const [name, setupdatedname] = useState("");
+
   const context = useContext(DataContext);
   const {
     data,
@@ -52,9 +54,9 @@ function UserProfile() {
     email: localStorage.getItem("email"),
     dp:
       localStorage.getItem("dp") &&
-      localStorage.getItem("dp") !== "null" &&
-      localStorage.getItem("dp") !== "undefined" &&
-      localStorage.getItem("dp").trim() !== ""
+        localStorage.getItem("dp") !== "null" &&
+        localStorage.getItem("dp") !== "undefined" &&
+        localStorage.getItem("dp").trim() !== ""
         ? localStorage.getItem("dp")
         : "https://cdn.pixabay.com/photo/2021/07/02/04/48/user-6380868_1280.png",
     recipesCreated:
@@ -67,8 +69,7 @@ function UserProfile() {
   const LoadRecipesCreated = async (page) => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/getpostedRecipes?page=${
-          page + 1
+        `http://localhost:5000/api/getpostedRecipes?page=${page + 1
         }&limit=${4}`,
         {
           headers: {
@@ -118,9 +119,9 @@ function UserProfile() {
     name: user.name,
   });
 
-  const [UpdateDp, setupdateDp] = useState("");
+
   const handleChange = (file) => {
-    setupdateDp(file);
+    setdp(file);
   };
 
   const handleLogout = () => {
@@ -133,14 +134,69 @@ function UserProfile() {
     location.reload();
   };
 
+  const updateDp = async () => {
+    if (dp === null) return;
+    try {
+      const data = new FormData();
+      data.append("image", dp);
+
+      const res = await axios.post("http://localhost:5000/api/updateUserdp", data, {
+        headers: {
+          "x-auth-token": localStorage.getItem("token"),
+        }
+      });
+      if (res.status === 200) {
+        localStorage.setItem("dp", res.data);
+        toast.success("Successfully updated dp");
+        location.reload();
+      }
+    }
+    catch (err) {
+      toast.error("Failed to updated user dp");
+    }
+  }
+
+  const updateName = async () => {
+    if (name === "") return;
+    try {
+
+      const res = await axios.post("http://localhost:5000/api/updateUserName", { name }, {
+        headers: {
+          "x-auth-token": localStorage.getItem("token"),
+        }
+      });
+      if (res.status === 200) {
+        localStorage.setItem("username",res.data);
+        toast.success("Successfully updated username");
+        location.reload();
+      } else {
+        toast.error("Failed to updated user name");
+        setEditMode(false);
+      }
+    }
+    catch (err) {
+      toast.error("Failed to updated user name");
+
+    }
+  }
+
+  const updateUserDetails = async () => {
+    updateDp();
+    updateName();
+    setTimeout(() => {
+      setEditMode(false);
+    }, 2000);
+  };
+
+
   return (
     <div className="max-w-2xl mx-auto place-items-center">
+      <ToastContainer />
       <h1 className="text-3xl font-bold mb-8 text-gray-800">User Profile</h1>
       <div className="bg-white w-[100%] shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <div
-          className={`flex   flex-1 mb-6 ${
-            EditMode && "flex-col place-content-center gap-3 "
-          }`}
+          className={`flex   flex-1 mb-6 ${EditMode && "flex-col place-content-center gap-3 "
+            }`}
         >
           <img
             src={user.dp}
@@ -170,9 +226,9 @@ function UserProfile() {
                 </label>
                 <input
                   type="text"
-                  value={Updatedetails.name}
+                  value={name}
                   onChange={(e) =>
-                    setUpdatedetails({ ...Updatedetails, name: e.target.value })
+                    setupdatedname(e.target.value)
                   }
                   className="w-full border outline-none bg-slate-100  rounded-md p-1 px-2"
                 />
@@ -212,9 +268,7 @@ function UserProfile() {
           )}
           {EditMode && (
             <button
-              onClick={() => {
-                setEditMode(false);
-              }}
+              onClick={updateUserDetails}
               className="bg-gradient-to-r  from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 mr-10 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline "
             >
               Save Profile
@@ -240,16 +294,15 @@ function UserProfile() {
               fav_Recipes.map((recipe) => {
                 return <RecipeCard key={recipe.id} recipe={recipe} />;
               })}
-            {data.favcnt==0 && (
+            {data.favcnt == 0 && (
               <h1 className="p-2">No Recipes Created By You</h1>
             )}
           </div>
 
 
           <div
-            className={`mx-auto  w-full ${
-               data.favcnt != 0 ? "flex" : "hidden"
-            } place-items-center `}
+            className={`mx-auto  w-full ${data.favcnt != 0 ? "flex" : "hidden"
+              } place-items-center `}
           >
             <ReactPaginate
               className="flex  mx-auto gap-4"
@@ -271,7 +324,7 @@ function UserProfile() {
             Recipes By You
           </h2>
           {Created_Recipes != null &&
-              Array.isArray(Created_Recipes) &&Created_Recipes.length===0 && "None of you have saved yet...."}
+            Array.isArray(Created_Recipes) && Created_Recipes.length === 0 && "None of you have saved yet...."}
           <div className="grid sm:p-2 md:p-0 sm:grid-cols-2  gap-4 w-full">
             {Created_Recipes != null &&
               Array.isArray(Created_Recipes) &&
@@ -281,10 +334,9 @@ function UserProfile() {
               })}
           </div>
           <div
-            className={`mx-auto  w-full ${
-              Created_Recipes != null &&
-              Array.isArray(Created_Recipes) && Created_Recipes.length!==0 ? "flex" : "hidden"
-            } place-items-center `}
+            className={`mx-auto  w-full ${Created_Recipes != null &&
+              Array.isArray(Created_Recipes) && Created_Recipes.length !== 0 ? "flex" : "hidden"
+              } place-items-center `}
           >
             <ReactPaginate
               className="flex  mx-auto gap-4"
