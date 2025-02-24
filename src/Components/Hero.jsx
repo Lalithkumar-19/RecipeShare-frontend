@@ -1,7 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { ReactTyped } from "react-typed";
 
 function Hero() {
+  const navigate=useNavigate();
   return (
     <div className="relative w-full h-[550px] md:h-[600px] mb-3">
       {/* Background Video */}
@@ -39,10 +41,10 @@ function Hero() {
 
         {/* Buttons */}
         <div className="mt-6 flex flex-wrap space-x-4">
-          <button className="py-2 px-6 bg-green-600 hover:bg-green-500 text-white font-medium rounded-md transition duration-300 shadow-lg">
+          <button className="py-2 px-6 bg-green-600 hover:bg-green-500 text-white font-medium rounded-md transition duration-300 shadow-lg" onClick={()=>{navigate("/recipes")}}>
             Explore
           </button>
-          <button className="py-2 px-6 border border-green-500 hover:bg-green-600 hover:text-white text-green-500 font-medium rounded-md transition duration-300 shadow-lg">
+          <button className="py-2 px-6 border border-green-500 hover:bg-green-600 hover:text-white text-green-500 font-medium rounded-md transition duration-300 shadow-lg" onClick={()=>{navigate("/login")}}>
             Sign Up
           </button>
         </div>

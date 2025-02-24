@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useNavigate } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -8,6 +9,7 @@ function FavRecipes() {
   const textRef = useRef(null);
   const imageRef = useRef(null);
   const buttonRefs = useRef([]);
+  const navigate=useNavigate();
 
   useEffect(() => {
     gsap.fromTo(
@@ -103,13 +105,14 @@ function FavRecipes() {
         <div className="flex space-x-6 py-4">
           <button
             ref={(el) => (buttonRefs.current[0] = el)}
-            className="px-5 py-2 border-2 border-black bg-white text-black rounded-md font-semibold hover:bg-green-500 hover:text-white transition-all duration-300"
+            className="px-5 py-2 border-2 border-black bg-white text-black rounded-md font-semibold hover:bg-green-500 hover:text-white transition-all duration-300" onClick={()=>{navigate("/recipes")}}
           >
             Search
           </button>
           <button
             ref={(el) => (buttonRefs.current[1] = el)}
             className="px-5 py-2 bg-black text-white rounded-md font-semibold hover:bg-green-700 transition-all duration-300 flex items-center gap-2"
+            onClick={()=>{navigate("/recipes")}}
           >
             Explore <i className="fa-solid fa-arrow-right"></i>
           </button>
