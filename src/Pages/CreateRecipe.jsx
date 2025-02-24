@@ -122,9 +122,9 @@ function CreateRecipe() {
           ></textarea>
         </div>
 
-        <div className="mb-6">
+        <div className="mb-6 overflow-x-hidden">
           <label className="block text-lg font-semibold mb-2">Upload Image</label>
-          <FileUploader handleChange={handleChange} name="file" types={fileTypes} />
+          <FileUploader handleChange={handleChange} name="file" className="w-[80%]" types={fileTypes} />
         </div>
 
         <div className="mb-6">

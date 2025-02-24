@@ -158,12 +158,12 @@ function LoginPage() {
         location.reload();
       }
     } catch (error) {
-      alert("error occured while logging through google");
+      toast.error("error occured while logging through google");
     }
   };
 
   const handleGoogleLoginFailure = (error) => {
-    alert("error occured while logging through google");
+    toast.error("error occured while logging through google");
     console.log("Google Login Error", error);
   };
 
@@ -277,8 +277,9 @@ function LoginPage() {
 
         {/* Google Login */}
         <GoogleOAuthProvider clientId={GoogleClientId}>
-          <div className="mt-4">
+          <div className="mt-4 flex w-full place-content-center place-items-center">
             <GoogleLogin
+              className="w-full"
               onSuccess={handleGoogleLoginSuccess}
               onError={handleGoogleLoginFailure}
               useOneTap
