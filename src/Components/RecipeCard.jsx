@@ -11,10 +11,10 @@ const RecipeCard = ({ recipe }) => {
 
   // Check if recipe is in user's favorite list when component mounts
   useEffect(() => {
-    const isFav = data.favRecipes.some(
+    const isFav = data.favRecipes&&data.favRecipes.some(
       (item) => parseInt(item) == parseInt(recipe.id)
     );
-    setIsFavourite(isFav);
+    setIsFavourite(isFav?isFav:false);
   }, []);
 
   const handleUnsave = async () => {

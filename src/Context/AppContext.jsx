@@ -4,6 +4,7 @@ import React, { createContext, useEffect, useState } from "react";
 const DataContext = createContext();
 
 export const AppContext = ({ children }) => {
+
   const [page, setPage] = useState(1);
    const [fav_Recipes, setFav_Recipes] = useState([]);
     const [Created_Recipes, setCreated_Recipes] = useState(null);
@@ -16,7 +17,7 @@ export const AppContext = ({ children }) => {
     createdRecipes_cnt:0,
     currentPage: page,
   });
-  console.log("Reci",Created_Recipes);
+  
 
   const LoadFavRecipes = async () => {
     try {
@@ -25,7 +26,7 @@ export const AppContext = ({ children }) => {
           "userId"
         )}`
       );
-
+          console.log("res",res);
       if (res.status === 200) {
         const { data, cnt } = res.data;
         setData((prev) => ({ ...prev, favRecipes: data, favcnt: cnt }));
@@ -75,8 +76,10 @@ export const AppContext = ({ children }) => {
     fetchRecipes();
   }, [page]);
 
+
+  console.log("context",data);
   return (
-    <DataContext.Provider value={{ data, setData, page, setPage ,fav_Recipes,setFav_Recipes,Created_Recipes,setCreated_Recipes}}>
+    <DataContext.Provider value={{ data, setData, page, setPage ,fav_Recipes,setFav_Recipes,Created_Recipes,setCreated_Recipes,fetchRecipes}}>
       {children}
     </DataContext.Provider>
   );

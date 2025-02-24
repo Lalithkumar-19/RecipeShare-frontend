@@ -61,7 +61,7 @@ function CreateRecipe() {
           headers: {
             "Content-Type": "multipart/form-data",
             "x-auth-token": localStorage.getItem("token"),
-            userId: localStorage.getItem("userId"),
+            "userId": localStorage.getItem("userId"),
           },
         }
       );
@@ -141,7 +141,7 @@ function CreateRecipe() {
         </div>
 
         <button
-          className="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out transform hover:scale-105"
+          className="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out transform hover:scale-105 text-center flex place-content-center"
           type="submit"
           disabled={creatingState}
         >

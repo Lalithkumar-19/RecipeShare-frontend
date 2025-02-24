@@ -10,6 +10,19 @@ function RecipeAIBot() {
   const [showRecipeModal, setShowRecipeModal] = useState(false);
   const botRef = useRef(null);
 
+  // Disable scrolling when modal is open
+  useEffect(() => {
+    if (showRecipeModal) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, [showRecipeModal]);
+
   // Close bot when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
@@ -30,13 +43,19 @@ function RecipeAIBot() {
     if (ingredients.trim() === "") return;
     setIsThinking(true);
 
-    // Simulating API response delay
-    const res = await axios.get(`http://localhost:5000/api/generateRecipe?ingredients=${ingredients}`);
-    if (res.status === 200) {
-      setIsThinking(false)
-      setRecipe(res.data.data.content);
-      setShowRecipeModal(true);
+    try {
+      const res = await axios.get(
+        `http://localhost:5000/api/generateRecipe?ingredients=${ingredients}`
+      );
+      if (res.status === 200) {
+        setIsThinking(false);
+        setRecipe(res.data.data.content);
+        setShowRecipeModal(true);
+      }
+    } catch (error) {
+      console.error("Error generating recipe:", error);
     }
+
     setIngredients("");
   };
 
@@ -96,8 +115,8 @@ function RecipeAIBot() {
 
       {/* Recipe Modal */}
       {showRecipeModal && (
-        <div className="fixed scroll_off inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 md:p-6 lg:p-8">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 md:p-6 lg:p-8">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-5xl">
             <div className="flex justify-between items-center">
               <h3 className="text-lg font-bold text-gray-800">
                 Generated Recipe
@@ -109,8 +128,8 @@ function RecipeAIBot() {
                 ×
               </button>
             </div>
-            <p className="mt-4 overflow-y-scroll h-[300px] text-gray-800">
-            <ReactMarkdown>{recipe}</ReactMarkdown>
+            <p className="mt-4 overflow-y-auto w-full h-[300px] text-gray-800">
+              <ReactMarkdown>{recipe}</ReactMarkdown>
             </p>
           </div>
         </div>

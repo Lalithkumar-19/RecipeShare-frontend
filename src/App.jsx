@@ -9,11 +9,13 @@ import RecipeDetail from "./Pages/RecipeDetail"
 import Footer from './Pages/Footer'
 import LoginPage from './Pages/Loginpage'
 import ForgotPassword from './Pages/Forgot-password';
+import RecipeAIBot from './Components/RecipeAIBot';
 
 function App() {
   return (
     <Router>
       <Navigation />
+       <RecipeAIBot/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage/>}/>

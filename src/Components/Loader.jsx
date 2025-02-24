@@ -2,7 +2,7 @@ import { Vortex } from "react-loader-spinner";
 
 export const Loader = () => {
   return (
-    <div className="mb-[300px]">
+    <div className="mx-auto">
     <Vortex
       visible={true}
       height="40"

@@ -3,7 +3,7 @@ import Hero from "../Components/Hero"
 import Explore from "../Components/Explore"
 import Discover from "../Components/Discover"
 import FavRecipes from "../Components/FavRecipes";
-import RecipeAIBot from "../Components/RecipeAIBot";
+// import RecipeAIBot from "../Components/RecipeAIBot";
 
 function Home() {
 
@@ -13,7 +13,7 @@ function Home() {
       <Explore />
       <Discover/>
       <FavRecipes/>
-      <RecipeAIBot/>
+     
     </div>
 
 

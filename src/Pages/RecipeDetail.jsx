@@ -2,14 +2,13 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Loader } from "../Components/Loader";
+import CommentsSection from "../Components/CommentSection";
 
 function RecipeDetail() {
   const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
-  const [comments, setComments] = useState([]);
-  const [newComment, setNewComment] = useState("");
-  const [rating, setRating] = useState(1);
-  const [hover, setHover] = useState(0);
+
+  
 
   const fetchRecipe = async () => {
     try {
@@ -25,13 +24,7 @@ function RecipeDetail() {
     fetchRecipe();
   }, []);
 
-  const handleCommentSubmit = (e) => {
-    e.preventDefault();
-    if (newComment.trim()) {
-      setComments([...comments, { comment: newComment, rating: rating }]);
-      setNewComment("");
-    }
-  };
+
 
   return recipe ? (
     <div className="bg-gray-50 rounded-lg shadow-lg p-8 w-[90%] mx-auto mt-6">
@@ -43,7 +36,7 @@ function RecipeDetail() {
         <div className="flex items-center">
           <span className="text-red-500 font-semibold mr-2">Rating:</span>
           <span className="text-gray-700 font-bold">
-            {recipe.rating.toFixed(1)}
+            {recipe.rating}
           </span>
           <span className="text-yellow-500 ml-2">★</span>
         </div>
@@ -51,6 +44,12 @@ function RecipeDetail() {
           <span className="text-red-500 font-semibold">Preparation Time:</span>
           <span className="text-gray-700"> {recipe.prep_time} min</span>
         </div>
+      </div>
+      <div>
+        <span className="text-red-500 font-semibold">Created By:</span>
+        <img src={recipe.author_dp||"https://cdn.pixabay.com/photo/2021/07/02/04/48/user-6380868_1280.png"}  className=" rounded-full  h-9 w-9 fa-solid  fa-user" alt="dp"/>
+          <span className="text-gray-700 uppercase  font-serif "> 
+            {recipe.author_name}</span>
       </div>
 
       <img
@@ -80,80 +79,7 @@ function RecipeDetail() {
       </div>
 
       {/* Rating System */}
-      <div className="mt-6">
-        <h2 className="text-2xl font-semibold mb-3 text-indigo-800">
-          Rate this Recipe
-        </h2>
-        <div className="flex">
-          {[...Array(5)].map((_, index) => {
-            const currentRating = index + 1;
-            return (
-              <span
-                key={index}
-                className={`cursor-pointer text-3xl ${
-                  currentRating <= (hover || rating)
-                    ? "text-yellow-500"
-                    : "text-gray-300"
-                }`}
-                onClick={() => setRating(currentRating)}
-                onMouseEnter={() => setHover(currentRating)}
-                onMouseLeave={() => setHover(0)}
-              >
-                ★
-              </span>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Comment Section */}
-      <div className="mt-8">
-        <h2 className="text-2xl font-semibold mb-3 text-indigo-800">
-          Comments
-        </h2>
-        <form onSubmit={handleCommentSubmit} className="mb-4">
-          <textarea
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            className="w-full p-3 border outline-none border-gray-300 rounded-lg focus:ring focus:ring-indigo-200"
-            placeholder="Add a comment..."
-            rows="4"
-          />
-          <button
-            type="submit"
-            className="mt-3 px-5 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700"
-          >
-            Submit Comment
-          </button>
-        </form>
-
-        <div>
-          {comments.length === 0 ? (
-            <p className="text-gray-500 text-lg font-semibold italic">
-              No comments yet. Be the first to comment!
-            </p>
-          ) : (
-            <ul className="space-y-4 w-[100%] mx-auto">
-              {comments.map((comment, index) => (
-                <div
-                  key={index}
-                  className="w-full flex flex-col bg-gradient-to-r from-green-900 via-green-800 to-gray-700 text-white px-6 py-4 rounded-lg shadow-lg"
-                >
-                  <p className="text-lg font-medium">{comment.comment}</p>
-                  <div className="flex items-center justify-between mt-2">
-                    <span className="text-sm text-gray-300">
-                      User {index + 1}
-                    </span>
-                    <span className="text-yellow-400 font-semibold flex items-center">
-                      ★ {comment.rating}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </ul>
-          )}
-        </div>
-      </div>
+       <CommentsSection recipeId={id}/>
     </div>
   ) : (
     <Loader />

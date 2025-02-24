@@ -31,15 +31,18 @@ function UserProfile() {
   } = context;
 
   useEffect(() => {
-    try {
-      let rounded_val = Math.ceil(data.createdRecipes_cnt / 4);
-      let rounded_fav_cnt = Math.ceil(data.favcnt / 4);
-      setfavRecipePage(rounded_fav_cnt);
-      setPageCount(rounded_val);
-    } catch (err) {
-      console.log(err);
-    }
-  }, [data.favcnt]);
+  try {
+    const createdCount = data.createdRecipes_cnt || 0;
+    const favCount = data.favcnt || 0;
+    let rounded_val = Math.ceil(createdCount / 4) || 1;  // Ensure it's at least 1
+    let rounded_fav_cnt = Math.ceil(favCount / 4) || 1;  // Ensure it's at least 1
+    setfavRecipePage(rounded_fav_cnt);
+    setPageCount(rounded_val);
+  } catch (err) {
+    console.log(err);
+  }
+}, [data.createdRecipes_cnt, data.favcnt]);
+
 
   const handlePageClick = (event) => {
     setCurrentPage(event.selected);
@@ -77,6 +80,7 @@ function UserProfile() {
           },
         }
       );
+      console.log("re2",res);
       if (res.status == 200) {
         setData((prev) => ({ ...prev, createdRecipes_cnt: res.data.cnt }));
         setCreated_Recipes([...res.data.data]);
@@ -187,7 +191,6 @@ function UserProfile() {
       setEditMode(false);
     }, 2000);
   };
-
 
   return (
     <div className="max-w-2xl mx-auto place-items-center">
