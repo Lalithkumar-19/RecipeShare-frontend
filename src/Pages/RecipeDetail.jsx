@@ -12,7 +12,7 @@ function RecipeDetail() {
 
   const fetchRecipe = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/recipes/${id}`);
+      const res = await axios.get(`https://recipeshare-server.onrender.com/api/recipes/${id}`);
       if (res.status === 200) {
         setRecipe(res.data);
       }

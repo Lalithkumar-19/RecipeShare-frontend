@@ -72,7 +72,7 @@ function UserProfile() {
   const LoadRecipesCreated = async (page) => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/getpostedRecipes?page=${page + 1
+        `https://recipeshare-server.onrender.com/api/getpostedRecipes?page=${page + 1
         }&limit=${4}`,
         {
           headers: {
@@ -94,7 +94,7 @@ function UserProfile() {
     try {
       if (!localStorage.getItem("userId")) return;
 
-      const res = await axios.get(`http://localhost:5000/api/getFavRecipes`, {
+      const res = await axios.get(`https://recipeshare-server.onrender.com/api/getFavRecipes`, {
         params: {
           page: page + 1,
           limit: 4,
@@ -144,7 +144,7 @@ function UserProfile() {
       const data = new FormData();
       data.append("image", dp);
 
-      const res = await axios.post("http://localhost:5000/api/updateUserdp", data, {
+      const res = await axios.post("https://recipeshare-server.onrender.com/api/updateUserdp", data, {
         headers: {
           "x-auth-token": localStorage.getItem("token"),
         }
@@ -164,7 +164,7 @@ function UserProfile() {
     if (name === "") return;
     try {
 
-      const res = await axios.post("http://localhost:5000/api/updateUserName", { name }, {
+      const res = await axios.post("https://recipeshare-server.onrender.com/api/updateUserName", { name }, {
         headers: {
           "x-auth-token": localStorage.getItem("token"),
         }

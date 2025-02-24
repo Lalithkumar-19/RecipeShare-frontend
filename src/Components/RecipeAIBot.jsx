@@ -45,7 +45,7 @@ function RecipeAIBot() {
 
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/generateRecipe?ingredients=${ingredients}`
+        `https://recipeshare-server.onrender.com/api/generateRecipe?ingredients=${ingredients}`
       );
       if (res.status === 200) {
         setIsThinking(false);

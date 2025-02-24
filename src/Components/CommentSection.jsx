@@ -21,7 +21,7 @@ function CommentsSection({ recipeId }) {
 
   const loadComments = async (page) => {
     try {
-      const res = await axios.get("http://localhost:5000/api/comments", {
+      const res = await axios.get("https://recipeshare-server.onrender.com/api/comments", {
         params: { recipe_id: recipeId, page: page + 1 },
       });
       if (res.status === 200) {
@@ -47,7 +47,7 @@ function CommentsSection({ recipeId }) {
     }
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/comments",
+        "https://recipeshare-server.onrender.com/api/comments",
         {
           recipe_id: recipeId,
           content: newComment,
@@ -72,7 +72,7 @@ function CommentsSection({ recipeId }) {
 
  const handleDeleteComment = async (commentId) => {
   try {
-    const res = await axios.delete(`http://localhost:5000/api/comments/${commentId}`, {
+    const res = await axios.delete(`https://recipeshare-server.onrender.com/api/comments/${commentId}`, {
       headers: {
         "x-auth-token": token,
       },

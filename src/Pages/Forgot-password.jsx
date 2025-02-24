@@ -38,7 +38,7 @@ export default function ForgotPassword() {
     setLoading(true);
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/forgot-password",
+        "https://recipeshare-server.onrender.com/api/forgot-password",
         { email }
       );
       if (res.status == 200) {
@@ -60,7 +60,7 @@ export default function ForgotPassword() {
     if (!otp || !newPassword) return toast.error("All fields are required!");
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:5000/api/reset-password", {
+      const res = await axios.post("https://recipeshare-server.onrender.com/api/reset-password", {
         email,
         otp,
         newPassword,

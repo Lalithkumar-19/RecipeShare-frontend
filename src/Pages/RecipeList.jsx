@@ -35,7 +35,7 @@ function RecipeList() {
     try {
       if (searchQuery.trim() !== "") {
         const res = await axios.get(
-          `http://localhost:5000/api/getFiltered?query=${searchQuery.trim()}&page=${page}&limit=10`
+          `https://recipeshare-server.onrender.com/api/getFiltered?query=${searchQuery.trim()}&page=${page}&limit=10`
         );
         if (res.status === 200) {
           const { recipes, totalRecipes } = res.data;

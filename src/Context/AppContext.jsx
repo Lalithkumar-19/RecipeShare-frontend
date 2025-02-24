@@ -22,7 +22,7 @@ export const AppContext = ({ children }) => {
   const LoadFavRecipes = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/getFavRecipeslist?userId=${localStorage.getItem(
+        `https://recipeshare-server.onrender.com/api/getFavRecipeslist?userId=${localStorage.getItem(
           "userId"
         )}`
       );
@@ -42,7 +42,7 @@ export const AppContext = ({ children }) => {
   const fetchRecipes = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/recipes?limit=5&page=${page}`
+        `https://recipeshare-server.onrender.com/api/recipes?limit=5&page=${page}`
       );
 
       if (res.status === 200) {

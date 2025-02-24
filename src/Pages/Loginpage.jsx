@@ -67,7 +67,7 @@ function LoginPage() {
     ) {
       setIsSignuping(true);
       try {
-        const res = await axios.post("http://localhost:5000/api/signup", {
+        const res = await axios.post("https://recipeshare-server.onrender.com/api/signup", {
           email,
           password,
           name,
@@ -102,7 +102,7 @@ function LoginPage() {
     if (!emailError && !passwordError && email && password) {
       setIsSubmitting(true);
       try {
-        const res = await axios.post("http://localhost:5000/api/login", {
+        const res = await axios.post("https://recipeshare-server.onrender.com/api/login", {
           email,
           password,
         });
@@ -136,7 +136,7 @@ function LoginPage() {
   const handleGoogleLoginSuccess = async (response) => {
     const { credential } = response;
     try {
-      const res = await axios.post("http://localhost:5000/api/google-login", {
+      const res = await axios.post("https://recipeshare-server.onrender.com/api/google-login", {
         token: credential,
       });
       if (res.status == 200 || res.status == 201) {

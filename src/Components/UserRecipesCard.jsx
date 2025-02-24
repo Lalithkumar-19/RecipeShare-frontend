@@ -5,14 +5,14 @@ import { toast } from "react-toastify";
 import { DataContext } from "../Context/AppContext";
 
 const UserRecipeCard = ({ recipe }) => {
-  
+
   const context = useContext(DataContext);
   const { Created_Recipes, setCreated_Recipes, data, setData } = context;
 
   const handleDelete = async () => {
     try {
       const res = await axios.delete(
-        `http://localhost:5000/api/deleteRecipe?id=${recipe.id}`,
+        `https://recipeshare-server.onrender.com/api/deleteRecipe?id=${recipe.id}`,
         {
           headers: {
             "Content-Type": "application/json",

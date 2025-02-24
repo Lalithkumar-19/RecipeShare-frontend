@@ -55,7 +55,7 @@ function CreateRecipe() {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/recipes",
+        "https://recipeshare-server.onrender.com/api/recipes",
         formdata,
         {
           headers: {

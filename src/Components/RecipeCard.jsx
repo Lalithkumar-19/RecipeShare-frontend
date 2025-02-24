@@ -26,7 +26,7 @@ const RecipeCard = ({ recipe }) => {
 
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/removeFromSaved?id=${
+        `https://recipeshare-server.onrender.com/api/removeFromSaved?id=${
           recipe.id
         }&userId=${localStorage.getItem("userId")}`
       );
@@ -60,7 +60,7 @@ const RecipeCard = ({ recipe }) => {
 
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/saveRecipe?id=${
+        `https://recipeshare-server.onrender.com/api/saveRecipe?id=${
           recipe.id
         }&userId=${localStorage.getItem("userId")}`
       );
