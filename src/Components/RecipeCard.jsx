@@ -84,7 +84,7 @@ const RecipeCard = ({ recipe }) => {
     <div className="md:hover:scale-105 p-4 relative">
       {/* Favorite Icon */}
       <div
-        className={`fa fa-bookmark absolute top-2 right-5 text-[27px] z-50 cursor-pointer ${
+        className={`fa fa-bookmark absolute top-2 right-5 text-[27px] z-30 cursor-pointer ${
           isFavourite ? "text-red-800" : "text-gray-500"
         }`}
         onClick={handleSave}

@@ -13,13 +13,16 @@ function RecipeAIBot() {
   // Disable scrolling when modal is open
   useEffect(() => {
     if (showRecipeModal) {
-      document.body.classList.add("overflow-hidden");
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.height = "100vh";
     } else {
-      document.body.classList.remove("overflow-hidden");
+      document.documentElement.style.overflow = "";
+      document.body.style.height = "";
     }
 
     return () => {
-      document.body.classList.remove("overflow-hidden");
+      document.documentElement.style.overflow = "";
+      document.body.style.height = "";
     };
   }, [showRecipeModal]);
 
@@ -48,12 +51,13 @@ function RecipeAIBot() {
         `https://recipeshare-server.onrender.com/api/generateRecipe?ingredients=${ingredients}`
       );
       if (res.status === 200) {
-        setIsThinking(false);
         setRecipe(res.data.data.content);
         setShowRecipeModal(true);
       }
     } catch (error) {
       console.error("Error generating recipe:", error);
+    } finally {
+      setIsThinking(false);
     }
 
     setIngredients("");
@@ -66,7 +70,7 @@ function RecipeAIBot() {
         onClick={() => setIsOpen(!isOpen)}
         className="bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-700 transition"
       >
-        {isOpen ? "Close AI Bot 🤖" : "Open AI Bot 🤖"}
+        {isOpen ? "Close AI Bot 🤖" : "Ask AI Bot 🤖"}
       </button>
 
       {/* AI Bot Popup */}
@@ -101,9 +105,15 @@ function RecipeAIBot() {
           {/* Generate Recipe Button */}
           <button
             onClick={generateRecipe}
-            className="mt-2 w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 transition"
+            disabled={isThinking} // Disables button when thinking
+            className={`mt-2 w-full py-2 rounded transition 
+              ${
+                isThinking
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-green-500 hover:bg-green-600 text-white"
+              }`}
           >
-            Generate Recipe
+            {isThinking ? "Generating..." : "Generate Recipe"}
           </button>
 
           {/* Thinking Indicator */}
@@ -115,7 +125,7 @@ function RecipeAIBot() {
 
       {/* Recipe Modal */}
       {showRecipeModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 md:p-6 lg:p-8">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4 md:p-6 lg:p-8">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-5xl">
             <div className="flex justify-between items-center">
               <h3 className="text-lg font-bold text-gray-800">
