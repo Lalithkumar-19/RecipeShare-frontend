@@ -20,28 +20,13 @@ function RecipeList() {
       );
 
       if (res.status === 200) {
-        setData((prev) => {
-          const newRecipes = res.data.data;
-
-          // Create a Set of existing recipe IDs for quick lookup
-          const existingIds = new Set(prev.All_recipes.map((r) => r.id));
-
-          // Filter out duplicates
-          const uniqueNewRecipes = newRecipes.filter(
-            (recipe) => !existingIds.has(recipe.id)
-          );
-
-          return {
-            ...prev,
-            All_recipes: [...prev.All_recipes, ...uniqueNewRecipes],
-            totalrecipesCnt: res.data.cnt,
-          };
-        });
+        setRecipes([...res.data.data]);
       }
     } catch (error) {
       console.error("Error fetching recipes:", error);
     }
   };
+  
  useEffect(()=>{
   fetchRecipes();
  },[])
