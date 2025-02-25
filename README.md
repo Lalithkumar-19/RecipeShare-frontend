@@ -1,86 +1,81 @@
-# 🍽️ RecipeShare - A Recipe Sharing Platform
+# RecipeShare 🍽️
 
-## 📌 About the Project
-RecipeShare is a full-stack web application that allows users to explore, create, and share their favorite recipes. The platform provides authentication via Google and email/password, enabling users to manage their own recipes and interact with others.
+A full-stack recipe-sharing platform where users can explore, create, and save their favorite recipes. This project was built as a collaborative effort to gain experience in team-based development.
 
-## 🚀 Features
+## Features ✨
 
-### 🔐 Authentication
-- Google Authentication
-- Email/Password Authentication (Normal Auth)
-- Secure JWT-based session management
+- **User Authentication:** Supports both Google Authentication and traditional email/password sign-up.
+- **Recipe CRUD Operations:** Users can create, read, update, and delete recipes.
+- **Save Recipes:** Users can save their favorite recipes for future reference, which will be reflected on their profile.
+- **Comment & Rating System:** Users can leave comments and rate recipes.
+- **AI-Powered Recipe Generator:** Enter ingredients and get AI-generated recipe suggestions.
+- **Responsive Design:** Optimized for all devices (mobile, tablet, and desktop).
 
-### 🍲 Recipe Management
-- Users can **create, read, update, and delete (CRUD)** their own recipes
-- Browse and explore recipes created by other users
-- Recipe details include **title, ingredients, instructions, preparation time, and ratings**
+## Tech Stack 🛠️
 
-### ⭐ Ratings & Comments
-- Users can rate recipes using a **5-star rating system**
-- Commenting system to engage with recipe creators and other users
+- **Frontend:** React (Vite)
+- **Backend:** Node.js, Express.js
+- **Database:** SQLite3
+- **Authentication:** Firebase (Google Auth), Custom JWT authentication
+- **Deployment:**
+  - Frontend: Vercel
+  - Backend: Render
 
-### 🏗️ Responsive Design & Animations
-- Fully responsive across **mobile, tablet, and desktop**
-- **GSAP animations** for smooth UI transitions
+## Installation & Setup 🚀
 
-### 🛠️ Tech Stack
-#### Frontend
-- **React.js** (with Hooks & Context API)
-- **Tailwind CSS** for styling
-- **GSAP** for animations
+### Prerequisites
+- Node.js installed
+- SQLite3 database
 
-#### Backend
-- **Node.js & Express.js** for server-side logic
-- **MongoDB & Mongoose** for database management
-- **JWT Authentication** for security
+### Steps to run locally:
 
-#### Deployment
-- Frontend: **Vercel**
-- Backend: **Railway**
-- Database: **MongoDB Atlas**
+1. **Clone the repository:**
+   ```sh
+   git clone https://github.com/your-repo/RecipeShare.git
+   cd RecipeShare
+   ```
 
-## ⚡ Setup & Installation
+2. **Install dependencies:**
+   ```sh
+   npm install
+   ```
 
-### Clone the repository
-```bash
-git clone https://github.com/yourusername/recipeshare.git
-cd recipeshare
-```
+3. **Set up the backend:**
+   ```sh
+   cd backend
+   npm install
+   ```
 
-### Install dependencies
-```bash
-npm install
-```
+4. **Run the backend:**
+   ```sh
+   npm start
+   ```
 
-### Set up environment variables
-Create a `.env` file in the root directory and add:
-```env
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-```
+5. **Run the frontend:**
+   ```sh
+   cd frontend
+   npm run dev
+   ```
 
-### Start the development server
-```bash
-npm run dev
-```
+6. Open `http://localhost:5173` to view the application.
 
-## 🌍 Deployment
-- Deploy frontend on **Vercel**
-- Deploy backend on **Railway**
+## Contributors 👨‍💻👩‍💻
 
-## 🎨 UI Screenshots
-(Add screenshots here to showcase the app's UI)
+This project was collaboratively built by:
+1. **Jhansi meri -jhansi543**
+2. **Ganesh Bv -ganesh-basavoju**
+3. **Abhi Chimmili -abhichimmili**
 
-## 🙌 Contributing
-Contributions are welcome! Feel free to fork the repo, create a new branch, and submit a pull request.
+We built this project to gain experience working in a team and collaborating on a full-stack application. 🚀
 
-## 📜 License
-This project is licensed under the **MIT License**.
+## Future Enhancements 🛠️
+- Implement real-time notifications for recipe interactions.
+- Improve AI-based recipe recommendations.
+- Add more social features like following users and recipe sharing.
 
-## ✨ Authors
-- [Your Name](https://github.com/yourusername)  
-- [Other Contributors]
+## License 📜
+This project is open-source and available under the MIT License.
 
-Give this project a ⭐ if you like it! Happy coding! 🚀
+---
+
+We hope you enjoy using RecipeShare! Happy cooking! 🍲
