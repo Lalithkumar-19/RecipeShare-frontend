@@ -13,7 +13,7 @@ function RecipeList() {
   const { data, setPage } = useContext(DataContext);
   const { totalrecipesCnt, All_recipes } = data;
 
-   const fetchRecipes = async () => {
+  const fetchRecipes = async () => {
     try {
       const res = await axios.get(
         `https://recipeshare-server.onrender.com/api/recipes?limit=5&page=${1}`
@@ -26,11 +26,14 @@ function RecipeList() {
       console.error("Error fetching recipes:", error);
     }
   };
-  
- useEffect(()=>{
-  fetchRecipes();
- },[])
 
+  useEffect(() => {
+    if (All_recipes.length === 0) {
+      fetchRecipes();
+    } else {
+      setRecipes(All_recipes);
+    }
+  }, [All_recipes]);
 
   useEffect(() => {
     if (searchQuery.trim() === "") {
