@@ -67,6 +67,11 @@ function CreateRecipe() {
       );
       if (res.status == 201) {
         const { cnt } = res.data;
+        setTitle("");
+        setIngredients("");
+        setInstructions("");
+        setPrepTime("");
+        setFile(null);
         localStorage.setItem("recipes_created", cnt);
         toast.success("Successfully created the recipe!");
       } else {
