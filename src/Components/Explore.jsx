@@ -16,13 +16,12 @@ function Explore() {
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 place-items-center">
-                {data.map((item, key) => {
-                   return <ExploreCards img={item.img} info={item.info} title={item.title} key={key}/>
-                })}
-             
-               
-            </div>
+            <div className="flex flex-wrap place-content-center gap-6 place-items-center w-full">
+  {data.map((item, index) => (
+    <ExploreCards img={item.img} info={item.info} title={item.title} key={index} />
+  ))}
+</div>
+
 
 
         </div>

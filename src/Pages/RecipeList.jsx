@@ -13,6 +13,40 @@ function RecipeList() {
   const { data, setPage } = useContext(DataContext);
   const { totalrecipesCnt, All_recipes } = data;
 
+   const fetchRecipes = async () => {
+    try {
+      const res = await axios.get(
+        `https://recipeshare-server.onrender.com/api/recipes?limit=5&page=${1}`
+      );
+
+      if (res.status === 200) {
+        setData((prev) => {
+          const newRecipes = res.data.data;
+
+          // Create a Set of existing recipe IDs for quick lookup
+          const existingIds = new Set(prev.All_recipes.map((r) => r.id));
+
+          // Filter out duplicates
+          const uniqueNewRecipes = newRecipes.filter(
+            (recipe) => !existingIds.has(recipe.id)
+          );
+
+          return {
+            ...prev,
+            All_recipes: [...prev.All_recipes, ...uniqueNewRecipes],
+            totalrecipesCnt: res.data.cnt,
+          };
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching recipes:", error);
+    }
+  };
+ useEffect(()=>{
+  fetchRecipes();
+ },[])
+
+
   useEffect(() => {
     if (searchQuery.trim() === "") {
       setRecipes(All_recipes);

@@ -291,14 +291,14 @@ function UserProfile() {
           <h2 className="text-2xl p-2 font-semibold text-gray-800 underline underline-offset-4 mb-4">
             Favourite Recipes
           </h2>
-          <div className="grid grid-cols-2 w-full">
+          <div className="grid md:grid-cols-2 grid-cols-1 w-full">
             {fav_Recipes &&
               Array.isArray(fav_Recipes) &&
               fav_Recipes.map((recipe) => {
                 return <RecipeCard key={recipe.id} recipe={recipe} />;
               })}
             {data.favcnt == 0 && (
-              <h1 className="p-2">No Recipes Created By You</h1>
+              <h1 className="p-2">No Recipes saved by You</h1>
             )}
           </div>
 
@@ -327,7 +327,7 @@ function UserProfile() {
             Recipes By You
           </h2>
           {Created_Recipes != null &&
-            Array.isArray(Created_Recipes) && Created_Recipes.length === 0 && "None of you have saved yet...."}
+            Array.isArray(Created_Recipes) && Created_Recipes.length === 0 && "None of you have posted yet...."}
           <div className="grid sm:p-2 md:p-0 sm:grid-cols-2  gap-4 w-full">
             {Created_Recipes != null &&
               Array.isArray(Created_Recipes) &&

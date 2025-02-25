@@ -1,4 +1,3 @@
-"use client"; // Required for Next.js App Router
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -12,7 +11,7 @@ function Discover() {
   useEffect(() => {
     gsap.fromTo(
       containerRef.current,
-      { opacity: 0, scale: 0.8 },
+      { opacity: 0, scale: 0.9 },
       {
         opacity: 1,
         scale: 1,
@@ -29,13 +28,13 @@ function Discover() {
     btnRefs.current.forEach((btn, index) => {
       gsap.fromTo(
         btn,
-        { opacity: 0, y: 50 },
+        { opacity: 0, y: 30 },
         {
           opacity: 1,
           y: 0,
           duration: 0.8,
-          ease: "bounce.out",
-          delay: index * 0.2, 
+          ease: "power2.out",
+          delay: index * 0.2,
           scrollTrigger: {
             trigger: btn,
             start: "top 90%",
@@ -47,24 +46,27 @@ function Discover() {
   }, []);
 
   return (
-    <div ref={containerRef} className="bg-white m-8 p-5 text-center">
-      <h1 className="text-black text-4xl font-bold px-3 m-4">
+    <div
+      ref={containerRef}
+      className="bg-white mx-4 md:mx-8 py-10 px-6 text-center rounded-lg shadow-md"
+    >
+      <h1 className="text-black text-3xl md:text-4xl font-bold px-2 md:px-6 mb-4">
         Discover Delicious Recipes Today!
       </h1>
-      <p className="text-black text-xl">
+      <p className="text-black text-lg md:text-xl px-2">
         Join our community to explore, share, and enjoy a world of culinary delights.
       </p>
 
-      <div className="flex justify-center gap-4 mt-4">
+      <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
         <button
           ref={(el) => (btnRefs.current[0] = el)}
-          className="py-2 px-4 font-medium bg-black text-white rounded-md w-[120px] text-center hover:bg-green-500 hover:text-white transition duration-300"
+          className="py-2 px-5 font-medium bg-black text-white rounded-md w-full sm:w-[140px] text-center hover:bg-green-500 transition duration-300"
         >
           Explore
         </button>
         <button
           ref={(el) => (btnRefs.current[1] = el)}
-          className="py-2 px-4 font-medium bg-transparent text-black rounded-md w-[120px] text-center hover:bg-green-500 hover:text-white transition duration-300 border-2 border-black"
+          className="py-2 px-5 font-medium bg-transparent text-black rounded-md w-full sm:w-[140px] text-center hover:bg-green-500 transition duration-300 border-2 border-black"
         >
           Share
         </button>
