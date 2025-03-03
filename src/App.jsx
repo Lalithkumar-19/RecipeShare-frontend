@@ -15,7 +15,7 @@ function App() {
   return (
     <Router>
       <Navigation />
-       <RecipeAIBot/>
+      <RecipeAIBot/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage/>}/>
